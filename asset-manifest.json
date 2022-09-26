@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/curseforgehelper/static/css/main.89247259.css",
-    "main.js": "/curseforgehelper/static/js/main.1841fcb3.js",
+    "main.js": "/curseforgehelper/static/js/main.870281b5.js",
     "static/js/787.ae623360.chunk.js": "/curseforgehelper/static/js/787.ae623360.chunk.js",
     "static/media/loading1.gif": "/curseforgehelper/static/media/loading1.b82a9952ec1c51c3676c.gif",
     "static/media/cross.webp": "/curseforgehelper/static/media/cross.1ab93d2cb707268a44ac.webp",
     "index.html": "/curseforgehelper/index.html",
     "main.89247259.css.map": "/curseforgehelper/static/css/main.89247259.css.map",
-    "main.1841fcb3.js.map": "/curseforgehelper/static/js/main.1841fcb3.js.map",
+    "main.870281b5.js.map": "/curseforgehelper/static/js/main.870281b5.js.map",
     "787.ae623360.chunk.js.map": "/curseforgehelper/static/js/787.ae623360.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.89247259.css",
-    "static/js/main.1841fcb3.js"
+    "static/js/main.870281b5.js"
   ]
 }
