@@ -32,7 +32,7 @@ function Modal({data, onClose}) {
                     setLoadingFiles(true);
                     async function fetchMod(url) {
                         return new Promise((resolve)=>{
-                            fetch(url)
+                            fetch(url.replace("https://edge.forgecdn.net/", "https://mediafiles.forgecdn.net/"))
                             .then(resp=>{return resp.blob()}).then(resp=>{
                                 resolve(resp);
                             });
