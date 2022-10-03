@@ -3,9 +3,9 @@ import ModalButton from "./ModalButton";
 import dropIcon from "../icons/dropdown.png";
 
 
-function ModalDropdownButton({items, settedDefaultItem, onItemSelect, prefix}) {
+function ModalDropdownButton({items, settedDefaultItem, onItemSelect, prefix, alwaysShow}) {
 
-    const [defaultItem, setDefaultItem] = useState(settedDefaultItem || items[0]);
+    const [defaultItem, setDefaultItem] = useState(alwaysShow || settedDefaultItem || items[0]);
     const [choosing, setChoosing] = useState(false);
     const [rect, setRect] = useState({});
     const id = "dropdownMenu"+parseInt(Math.random()*9999);
@@ -33,7 +33,7 @@ function ModalDropdownButton({items, settedDefaultItem, onItemSelect, prefix}) {
                         return (
                             <div className={"modal-dropdown-item " + (e===defaultItem ? "modal-dropdown-item-sel" : "")} key={Math.random()*9999} onClick={()=>{
                                 setChoosing(false);
-                                setDefaultItem(e);
+                                setDefaultItem(alwaysShow || e);
                                 onItemSelect(e);
                             }}>{e}</div>
                         );
@@ -48,7 +48,8 @@ ModalDropdownButton.defaultProps = {
     "items":[],
     "defaultItem":void 0,
     "onItemSelect":(item)=>{},
-    "prefix":""
+    "prefix":"",
+    "alwaysShow":void 0
 };
 
 export default ModalDropdownButton;

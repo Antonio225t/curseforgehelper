@@ -29,6 +29,14 @@ function Modal({data, onClose}) {
         setDataLoad(window.filescache[data.id]);
     }
 
+    var mpacksi = JSON.parse(localStorage.getItem("ch-savedModpacks"));
+    var mpacks = [];
+    let i=0;
+    for (let pack of mpacksi) {
+        mpacks.push([i, pack]);
+        i++;
+    }
+
     if (dataLoad) {
         //console.log(dataLoad);
 
@@ -84,8 +92,31 @@ function Modal({data, onClose}) {
                     <div className="modal-listbox">
                         {dataLoad.data.map(item=>{
                             return ![gamever === "Tutte" ? true : item.gameVersions.includes(gamever), relver === "Tutte" ? true : (relver==="Stabili" ? item.releaseType===1 : (relver==="Beta" ? item.releaseType===2 : relver==="Alpha" ? item.releaseType===3 : false))].includes(false) ? (
-                                <div className="modal-listbox-item" key={item.id} onClick={()=>{console.log(item)}}>
-                                    <span className="modal-moditem-name">{item.fileName}</span>
+                                <div className="modal-listbox-item" key={item.id}>
+                                    <div className="modal-listbox-item-2">
+                                        <span className="modal-moditem-name">{item.fileName}</span>
+                                        <ModalDropdownButton alwaysShow={"..."} items={["Nuovo", ...mpacks.map((tem)=>{return tem[1].name+" "+tem[0];})]} onItemSelect={(tem)=>{
+                                            let mod = {"download":item.downloadUrl,"fileId":item.id,"modId":item.modId,"fileName":item.fileName};
+                                            if (tem==="Nuovo") {
+                                                console.log(item)
+                                                let gameVer = item.gameVersions.filter((ee)=>{return ee.includes(".")})[0];
+                                                let modLoader = item.gameVersions.filter((ee)=>{return !ee.includes(".")})[0];
+                                                modLoader = modLoader==="Forge" ? 1 : modLoader==="Cauldron" ? 2 : modLoader==="LiteLoader" ? 3 : modLoader==="Fabric" ? 4 : modLoader==="Quilt" ? 5 : 0;
+                                                let mpack = {name:window.prompt("Inserisci il nome del modpack."),modLoader:modLoader,mods:[mod],description:"",icon:"https://docs.curseforge.com/images/favicon-77e794e5.ico",gameVersion:gameVer,modpackVersion:"0.1"}
+                                                mpack.id = mpacksi.length-1;
+                                                mpacksi.push(mpack);
+                                                localStorage.setItem("ch-savedModpacks", JSON.stringify(mpacksi));
+
+                                                console.log("Aggiunto "+item.fileName+" al modpack "+mpack.name+" che è stato appena definito dall'utente e salvato nello storage locale!");
+                                                return;
+                                            }
+                                            const index = tem.split(" ")[tem.split(" ").length-1];
+                                            mpacksi[index].mods = mpacksi[index].mods.filter((e)=>{return e.modId!==mod.modId});
+                                            mpacksi[index].mods.push(mod);
+                                            localStorage.setItem("ch-savedModpacks", JSON.stringify(mpacksi));
+                                            console.log("Aggiunto "+item.fileName+" al modpack "+mpacksi[index].name+"!");
+                                        }} />
+                                    </div>
                                     <div className="modal-moditem-versions">
                                         {item.gameVersions.map(version=>{
                                             return <code key={Math.random()*9999} className="moditem-prop moditem-prop-inmodal">{version}</code>

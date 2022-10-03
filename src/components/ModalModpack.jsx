@@ -10,6 +10,13 @@ import FileSaver from "file-saver";
 function Modal({data, onClose}) {
 
     const [loadingFiles, setLoadingFiles] = useState(false);
+    const [mammamia, setMammamia] = useState(void 0); //Eh, devo fare così per settare modpack che sennò non lo fa per qualche ragione ancora sconosciuta :(
+    const [modpack, setModpack] = useState(data);
+
+    if (mammamia) {
+        setModpack(mammamia);
+        setMammamia(void 0);
+    }
 
     return (
         <div className="modal-container">
@@ -28,47 +35,55 @@ function Modal({data, onClose}) {
                     a.download = data.name+".json";
                     a.click();
                 }} title={"Scarica il file JSON del modpack in modo da essere condiviso."} />
-                <ModalButton name={loadingFiles ? "Caricamento..." : "Scarica mods ZIP"} icon={loadingFiles ? loading : infoI} disabled={loadingFiles} onClick={()=>{
+                <ModalButton name={loadingFiles ? "Caricamento..." : "Scarica mods ZIP"} icon={loadingFiles ? loading : infoI} disabled={loadingFiles} onClick={async ()=>{
                     setLoadingFiles(true);
                     async function fetchMod(url) {
                         return new Promise((resolve)=>{
-                            fetch(url.replace("https://edge.forgecdn.net/", "https://mediafiles.forgecdn.net/"))
+                            fetch("https://curseforge-files.antonio225.repl.co/?url="+url)
                             .then(resp=>{return resp.blob()}).then(resp=>{
                                 resolve(resp);
                             });
                         });
                     }
                     const zipfile = new JSZip();
-                    data.mods.forEach(async (mod)=>{
+                    for (let mod of data.mods) {
                         zipfile.file(mod.fileName, await fetchMod(mod.download));
-                    });
+                    }
                     zipfile.generateAsync({ type: 'blob' }).then(function (content) {
                         FileSaver.saveAs(content, data.name+".zip");
                     });
                     setLoadingFiles(false);
                 }} title={"Scarica un file ZIP contenenti tutte le mod del modpack."} />
             </div>
-            {data.mods.length>0 && !loadingFiles ? (
+            {modpack.mods.length>0 && !loadingFiles ? (
                 <>
                     <div className="modal-listbox">
-                        {data.mods.map(item=>{
+                        {modpack.mods.map((item)=>{
                             return (
-                                <div className="modal-listbox-item" key={item.fileId}>
+                                <div className="modal-listbox-itemmodpack" key={item.fileId}>
                                     <span className="modal-moditem-name">{item.fileName}</span>
+                                    <img className="modal-close" alt={"X"} src={cross} onClick={()=>{
+                                        const items = JSON.parse(localStorage.getItem("ch-savedModpacks"));
+                                        modpack.mods.splice(modpack.mods.map(e=>{return e.fileId}).indexOf(item.fileId), 1);
+                                        items[modpack.id] = modpack;
+                                        localStorage.setItem("ch-savedModpacks", JSON.stringify(items));
+                                        setMammamia(items[modpack.id]);
+                                    }} />
                                 </div>
                             );
                         })}
                     </div>
-                    <center><span>Mods totali: {data.mods.length}</span></center>
+                    <center><span>Mods totali: {modpack.mods.length}</span></center>
                 </>
-                ) : ""}
+            ) : ""}
         </div>
     )
 }
 
 Modal.defaultProps = {
     "data": {},
-    "onClose": ()=>{}
+    "onClose": ()=>{},
+    "index":0
 }
 
 export default Modal;
