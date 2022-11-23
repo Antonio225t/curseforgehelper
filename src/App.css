@@ -242,6 +242,7 @@ code.moditem-prop-alpha {
 .modal-button-disabled:hover {
   background-color: hsla(147, 100%, 31%, 0.323);
   cursor: not-allowed;
+  transition: background-color .1s;
 }
 
 .modal-button > span {
@@ -346,6 +347,10 @@ code.moditem-prop-alpha {
 
 .modal-moditem-name {
   font-size: medium;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative;
 }
 
 .modal-moditem-versions {
@@ -441,6 +446,36 @@ code.moditem-prop-alpha {
   border-color: hsl(0, 0%, 50%);
   background-color: hsl(0, 0%, 83%);
   cursor: not-allowed;
+}
+
+
+.upload-box {
+  border-style: dashed;
+  border-width: 8px;
+  border-radius: 7px;
+  border-color: hsl(258, 90%, 20%);
+  padding: 17%;
+  background-color: hsla(180, 100%, 50%, 0.3);
+  margin-top: 32px;
+  text-align: center;
+  transition: .1s;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+}
+
+.upload-box:hover {
+  border-color: hsl(258, 90%, 40%);
+  background-color: hsla(180, 100%, 50%, 0.5);
+  transition: .1s;
+  cursor: pointer;
+}
+
+.modal-mpack-downlaod {
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
 }
 
 

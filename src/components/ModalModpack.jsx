@@ -62,13 +62,18 @@ function Modal({data, onClose}) {
                             return (
                                 <div className="modal-listbox-itemmodpack" key={item.fileId}>
                                     <span className="modal-moditem-name">{item.fileName}</span>
-                                    <img className="modal-close" alt={"X"} src={cross} onClick={()=>{
-                                        const items = JSON.parse(localStorage.getItem("ch-savedModpacks"));
-                                        modpack.mods.splice(modpack.mods.map(e=>{return e.fileId}).indexOf(item.fileId), 1);
-                                        items[modpack.id] = modpack;
-                                        localStorage.setItem("ch-savedModpacks", JSON.stringify(items));
-                                        setMammamia(items[modpack.id]);
-                                    }} />
+                                    <div className="modal-mpack-downlaod">
+                                        <ModalButton name={"Scarica"} title={"Scarica la mod."} onClick={()=>{
+                                            window.open(item.download);
+                                        }} />
+                                        <img className="modal-close" alt={"X"} src={cross} onClick={()=>{
+                                            const items = JSON.parse(localStorage.getItem("ch-savedModpacks"));
+                                            modpack.mods.splice(modpack.mods.map(e=>{return e.fileId}).indexOf(item.fileId), 1);
+                                            items[modpack.id] = modpack;
+                                            localStorage.setItem("ch-savedModpacks", JSON.stringify(items));
+                                            setMammamia(items[modpack.id]);
+                                        }} />
+                                    </div>
                                 </div>
                             );
                         })}
